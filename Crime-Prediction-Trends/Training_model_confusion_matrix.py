@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
 import os
+import joblib
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -59,6 +60,12 @@ y_pred = model.predict(X_test)
 # Print accuracy and classification report
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred, target_names=le.classes_))
+
+
+# Save the trained model with a clear versioned name
+joblib.dump(model, 'random_forest_classifier.pkl')
+print("Model saved as random_forest_classifier.pkl")
+
 
 # Plot and save confusion matrix
 cm = confusion_matrix(y_test, y_pred)
