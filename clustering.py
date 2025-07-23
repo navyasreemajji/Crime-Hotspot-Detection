@@ -45,6 +45,7 @@ coords = df[['latitude', 'longitude']].to_numpy()
 kms_per_radian = 6371.0088
 epsilon = 10 / kms_per_radian  # 10km radius
 
+
 # Apply DBSCAN using haversine distance
 db = DBSCAN(eps=epsilon, min_samples=5, algorithm='ball_tree', metric='haversine')
 df['Cluster_DBSCAN'] = db.fit_predict(np.radians(coords))
