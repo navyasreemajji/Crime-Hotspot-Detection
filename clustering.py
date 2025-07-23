@@ -9,7 +9,7 @@ from folium.plugins import HeatMap
 
 
 # STEP 1: Load and clean the dataset
-df = pd.read_csv("modify.csv", encoding='ISO-8859-1')
+df = pd.read_csv("modified_dataset.csv", encoding='ISO-8859-1')
 
 # Clean latitude and longitude
 df['latitude'] = df['latitude'].astype(str).str.replace('°', '', regex=False).str.strip()
@@ -81,12 +81,16 @@ heat_data = [
     for index, row in df[df['Total_Crime_Weight'] >= threshold].iterrows()
 ]
 
-# Create the map
+# Create and display the heatmap
+import webbrowser
+import tempfile
+import os
+
 map_center = [df["latitude"].mean(), df["longitude"].mean()]
 m = folium.Map(location=map_center, zoom_start=6)
-
-# Add heatmap layer
 HeatMap(heat_data).add_to(m)
 
-# Save the map
-m.save("crime_heatmap.html")
+# Display directly
+temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".html")
+m.save(temp_file.name)
+webbrowser.open('file://' + os.path.realpath(temp_file.name))
