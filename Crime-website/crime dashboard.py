@@ -26,7 +26,7 @@ app = dash.Dash(
 )
 
 # Load dataset
-data = pd.read_csv("feature_engineered_data.csv")
+data = pd.read_csv(r"Data-collection/feature_engineered_data.csv")
 
 crime_columns = [
     'murder', 'culp homicide', 'attempt murder', 'dowry deaths',
