@@ -1,0 +1,108 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  background: rgba(0, 0, 0, 0.3); 
+
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  width: 350px;
+  backdrop-filter: blur(10px); /* glass blur effect */
+  -webkit-backdrop-filter: blur(10px); /* for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* subtle border */
+}
+
+
+.login-heading {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #f9f5f5;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;/* make background transparent */
+  color: rgb(148, 119, 119); /* text color for contrast on dark bg */
+  outline: none;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #8d150a; 
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #570e0e;
+}
+.signup {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: white; /* text in white */
+}
+
+.signup a {
+  color: white; /* link also white */
+  text-decoration: underline;
+}
+
+.signup a:hover {
+  color: #ccc; /* light gray on hover */
+}
+body {
+  background-color: #141111;
+  /* dark background for white text */
+  color: rgb(236, 222, 222);
+  font-family: Arial, sans-serif;
+}
+
+.form-label {
+  color: white;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+  color: white;
+}
+
+.signup-link a {
+  color: white;
+  text-decoration: underline;
+}
+
+.signup-link a:hover {
+  color: #ccc;
+}
+
+.login-container label {
+  color: rgb(248, 243, 243);
+}

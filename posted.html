@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crime Posted</title>
+  <style>
+    body {
+      background: #0f0f0f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+    }
+
+    .report-card {
+      background-color: #121212;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .report-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .report-card-content {
+      padding: 20px;
+    }
+
+    .report-card-content h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      color: #ff6666;
+    }
+
+    .report-card-content p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .reporter-tag {
+      color: #999;
+      font-style: italic;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Crime Report Posted</h1>
+  <div class="report-card" id="reportCard"></div>
+
+  <script>
+    const reportData = JSON.parse(localStorage.getItem("latestReport"));
+    const card = document.getElementById("reportCard");
+
+    if (reportData) {
+      const imageTag = reportData.imageData ? `<img src="${reportData.imageData}" alt="Crime image">` : '';
+
+      card.innerHTML = `
+        ${imageTag}
+        <div class="report-card-content">
+          <h3>${reportData.type} in ${reportData.area}</h3>
+          <p>${reportData.description}</p>
+          <p class="reporter-tag">Reported by ${reportData.reporter}</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

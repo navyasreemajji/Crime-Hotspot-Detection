@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crime Report Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #000;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      color: #eaeaea;
+    }
+
+    form {
+      background: #111;
+      max-width: 500px;
+      margin: 0 auto 40px;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 10px;
+      border: none;
+      background-color: #1e1e1e;
+      color: white;
+      font-size: 14px;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #888;
+    }
+
+    button {
+      background-color: #c0141d;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #d80f0f;
+    }
+
+    #report-section {
+      display: none;
+    }
+
+    .report-card {
+      background-color: #121212;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      overflow: hidden;
+      margin: 0 auto 30px;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .report-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .report-card-content {
+      padding: 15px 20px;
+    }
+
+    .report-card-content h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #ff6666;
+    }
+
+    .report-card-content p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .reporter-tag {
+      color: #999;
+      font-style: italic;
+      margin-top: 10px;
+    }
+
+    .crime-feed {
+      display: flex;
+      padding: 40px;
+      gap: 30px;
+      background: #0f0f0f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .profile-card {
+      background: #1c1c1e;
+      border-radius: 20px;
+      padding: 30px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .crime-post {
+      flex: 1;
+      background: #1a1a1c;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+
+    .crime-post h2 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .crime-img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+
+    .tags span {
+      background: #333;
+      padding: 5px 10px;
+      margin-right: 8px;
+      border-radius: 15px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Report a Crime</h1>
+
+  <form id="crimeForm">
+    <input type="text" id="area" placeholder="Crime location" required />
+    <input type="text" id="type" placeholder="Type of crime" required />
+    <textarea id="description" placeholder="Describe the incident..." rows="4" required></textarea>
+    <input type="text" id="reporter" placeholder="Your name (optional)" />
+    <input type="file" id="image" accept="image/*" />
+    <button type="submit">Post Report</button>
+  </form>
+ 
+
+  <!-- Feed Section: initially hidden -->
+  <div id="report-section">
+    <div class="crime-feed">
+      <!-- Left: Profile -->
+      <div class="profile-card">
+        <img src="Master Social Media Marketing! 🚀.jpeg" alt="User" class="profile-pic" />
+        <h3>Harika</h3>
+        <p>Crime Reporter</p>
+        <div class="contact">
+          <p>Email: harika@example.com</p>
+          <p>Posted on: <span id="post-date">25 July 2025</span></p>
+        </div>
+      </div>
+     
+
+
+
+      <!-- Right: Crime Post -->
+      <div class="crime-post" id="latest-post">
+        <!-- JavaScript will inject crime data here -->
+      </div>
+    </div>
+
+    <div id="report-list"></div>
+  </div>
+
+ <script>
+  const form = document.getElementById('crimeForm');
+  const reportSection = document.getElementById('report-section');
+  const latestPost = document.getElementById('latest-post');
+  const postDateSpan = document.getElementById('post-date');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const area = document.getElementById('area').value;
+    const type = document.getElementById('type').value;
+    const description = document.getElementById('description').value;
+    const reporter = document.getElementById('reporter').value || "Anonymous";
+    const imageInput = document.getElementById('image');
+    const imageFile = imageInput.files[0];
+
+    // Hide form
+    form.style.display = 'none';
+
+    // Show profile + post
+    reportSection.style.display = 'block';
+
+    // Set today's date
+    const today = new Date().toLocaleDateString('en-IN', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+    postDateSpan.innerText = today;
+
+    let imageTag = '';
+    if (imageFile) {
+      const imageURL = URL.createObjectURL(imageFile);
+      imageTag = `<img src="${imageURL}" alt="Crime Scene" class="crime-img" />`;
+    }
+
+    latestPost.innerHTML = `
+      <h2>${type} at ${area}</h2>
+      <p>${description}</p>
+      ${imageTag}
+      <div class="tags">
+        <span>#${type.toLowerCase()}</span>
+        <span>#local</span>
+      </div>
+    `;
+  });
+</script>
+
+
+</body>
+</html>

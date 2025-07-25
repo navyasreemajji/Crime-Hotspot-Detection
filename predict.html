@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Predict Crime</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Enter Your Area</h2>
+    <form id="areaForm">
+      <input type="text" id="areaInput" placeholder="Enter Area" required />
+      <button type="submit">Predict Crime</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('areaForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const area = document.getElementById('areaInput').value;
+
+      // Optional: store in localStorage or send to backend via fetch if needed
+      // localStorage.setItem('userArea', area);
+
+      // Redirect to dashboard
+      window.location.href = "/dashboard/";
+    });
+  </script>
+</body>
+</html>
