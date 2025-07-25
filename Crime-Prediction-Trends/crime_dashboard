@@ -1,0 +1,114 @@
+import dash
+import dash_bootstrap_components as dbc
+from dash import dcc, html, Input, Output
+import pandas as pd
+import plotly.express as px
+
+# Load dataset
+data = pd.read_csv(r"Data-collection/feature_engineered_data.csv")
+
+# Create Dash app with Bootstrap theme
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SANDSTONE])
+app.title = "Crime Dashboard"
+
+# List of crime columns you want to include (can be extended)
+crime_columns = [
+    'murder', 'culp homicide', 'attempt murder', 'dowry deaths',
+    'abetment of suicide', 'assault_on_women', 'heart and life safety',
+    'missing_child_kidnpd', 'attempt rape', 'robbery'
+]
+
+# Layout
+app.layout = dbc.Container([
+    html.H1("Crime Data Visualization", className="text-center my-4 text-primary"),
+
+    dbc.Row([
+        dbc.Col([
+            html.Label("Select District", className="fw-bold"),
+            dcc.Dropdown(
+                id='district-dropdown',
+                options=[{'label': d, 'value': d} for d in data['district_name'].unique()],
+                value=data['district_name'].unique()[0],
+                clearable=False
+            )
+        ], md=6),
+
+        dbc.Col([
+            html.Label("Select Crime Type", className="fw-bold"),
+            dcc.Dropdown(
+                id='crime-type-dropdown',
+                options=[{'label': c.replace('_', ' ').title(), 'value': c} for c in crime_columns],
+                value='murder',
+                clearable=False
+            )
+        ], md=6),
+    ], className="mb-4"),
+
+    dbc.Row([
+        dbc.Col([
+            dbc.Card([
+                dbc.CardBody([
+                    html.H5("Total Reported Cases", className="card-title text-success"),
+                    html.H2(id='kpi-output', className="card-text")
+                ])
+            ], className="shadow")
+        ])
+    ], className="mb-4"),
+
+    dbc.Row([
+        dbc.Col([
+            dcc.Loading(
+                id="loading-graph",
+                type="circle",
+                children=[dcc.Graph(id='crime-graph')]
+            )
+        ])
+    ]),
+
+], fluid=True)
+
+# Callback to update graph and KPI
+@app.callback(
+    Output('crime-graph', 'figure'),
+    Output('kpi-output', 'children'),
+    Input('district-dropdown', 'value'),
+    Input('crime-type-dropdown', 'value')
+)
+def update_dashboard(district, crime_type):
+    filtered_data = data[data['district_name'] == district]
+
+    # Calculate total cases for KPI
+    total = filtered_data[crime_type].sum()
+
+    # Create figure with bar color steelblue
+    fig = px.bar(
+        filtered_data,
+        x='year',
+        y=crime_type,
+        title=f"{crime_type.replace('_', ' ').title()} in {district} Over the Years",
+        labels={'year': 'Year', crime_type: 'Number of Cases'},
+        color_discrete_sequence=['steelblue']
+    )
+
+    fig.update_layout(
+        xaxis_title='Year',
+        yaxis_title='Reported Cases',
+        template='plotly_white',
+        title_x=0.5
+    )
+
+    # Customize hover tooltip label color (font_color)
+    fig.update_traces(
+        hoverlabel=dict(
+            bgcolor="indianred",       # Tooltip background color
+            font_size=14,
+            font_family="Arial",
+            font_color="white"  # Tooltip text color on hover
+        )
+    )
+
+    return fig, f"{int(total):,}"
+
+# Run the app
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=False)
