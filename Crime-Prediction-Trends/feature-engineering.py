@@ -2,7 +2,6 @@ import pandas as pd
 
 # Load the dataset you worked with
 data = pd.read_csv(r'D:/Navya/modified_dataset.csv', encoding='ISO-8859-1')
-  # Replace with the correct dataset path if needed
 
 # Feature Engineering: Extract time-based features
 data['month'] = pd.to_datetime(data['year'], format='%Y').dt.month

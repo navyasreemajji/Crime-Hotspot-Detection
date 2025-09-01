@@ -167,7 +167,6 @@ def cluster_and_visualize():
     )
     fig.show()
 
-    # Folium Heatmap
     threshold = df['Total_Crime_Weight'].quantile(0.75)
     heat_data = [[row['latitude'], row['longitude'], row['Total_Crime_Weight']] for i, row in df[df['Total_Crime_Weight'] >= threshold].iterrows()]
     m = folium.Map(location=[df['latitude'].mean(), df['longitude'].mean()], zoom_start=6)
@@ -179,7 +178,6 @@ def cluster_and_visualize():
     print("✅ Clustering and Heatmap Completed")
 
 
-# --- Run Entire Pipeline ---
 if __name__ == "__main__":
     feature_engineering()
     group_crimes()
@@ -187,13 +185,11 @@ if __name__ == "__main__":
     show_feature_importance()
     cluster_and_visualize()
 
- # ---- Now launch the dashboard ----
     from dash import dcc, html, Input, Output
     import dash_bootstrap_components as dbc
     import dash
     import plotly.express as px
 
-    # Load dataset
     data = pd.read_csv(r"Data-collection/feature_engineered_data.csv")
 
     crime_columns = [
